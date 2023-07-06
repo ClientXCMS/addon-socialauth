@@ -1,0 +1,34 @@
+{% extends "@admin/layout.twig" %}
+
+{% block title trans("socialauth.admin.config.title") %}
+{% block pagetitle %} {{ trans("socialauth.admin.config.title") }} {% endblock %}
+
+{% block pagesubtitle trans("socialauth.admin.config.subtitle", {"%name%": name}) %}
+{% block body %}
+
+    <div class="row">
+        <div class="col-12 card">
+            <div class="card-body text-muted">
+                <h4>{{ provider.name() }}</h4>
+                <form method="POST" action="{{ path('socialauth.admin.config', {'name': name}) }}" class="card-body">
+                    <div class="row">
+                        {{ csrf_input() }}
+                        <div class="col-md-12 col-xl-4">
+                            {{ field('client_id', config.clientId, 'Client Id') }}
+                        </div>
+
+                        <div class="col-md-12 col-xl-4">
+                            {{ field('client_secret', config.clientSecret, 'Secret Id') }}
+                        </div>
+
+                        <div class="col-md-12 col-xl-4">
+                            {{ field('redirect_uri', redirectUri, 'Redirect URI', {disabled: 'true'}) }}
+                        </div>
+                            <button class="btn btn-primary" name="save"><i class="fas fa-pen"></i> {{ trans("save") }}
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>{% endblock %}
