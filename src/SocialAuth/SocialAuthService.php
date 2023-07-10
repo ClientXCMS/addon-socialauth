@@ -8,12 +8,15 @@ use App\Auth\DatabaseUserAuth;
 use App\SocialAuth\Database\ProviderTable;
 use App\SocialAuth\Database\SocialAuthUserTable;
 use App\SocialAuth\Entity\ProviderEntity;
+use App\SocialAuth\Event\SocialAuthLoginEvent;
+use App\SocialAuth\Event\SocialAuthSignupEvent;
 use App\SocialAuth\Providers\SocialAuthProviderInterface;
 use App\Translation\TranslationTrait;
 use ClientX\Actions\Traits\FlashTrait;
 use ClientX\Crypt\Crypter;
 use ClientX\Database\Hydrator;
 use ClientX\Database\NoRecordException;
+use ClientX\Event\EventManager;
 use ClientX\Helpers\AccountStatus;
 use ClientX\Helpers\Passwords;
 use ClientX\Helpers\Str;
@@ -42,6 +45,7 @@ class SocialAuthService
     private bool $tosCheck;
     private string $locale;
     private Router $router;
+    private EventManager $event;
 
     use TranslationTrait;
     use FlashTrait;
@@ -54,6 +58,7 @@ class SocialAuthService
         ProviderTable       $providerTable,
         Translater          $translater,
         SessionInterface    $session,
+        EventManager $event,
         Router $router,
         string $banned,
         string $tosLinks,
@@ -68,7 +73,7 @@ class SocialAuthService
         $this->flash = new FlashService($session);
         $this->translater = $translater;
         $this->session = $session;
-
+        $this->event = $event;
         $this->banned = explode(',', $banned);
         $this->tosCheck = empty($tosLinks) == false;
         $this->locale = $locale;
@@ -125,9 +130,9 @@ class SocialAuthService
             if ($this->authUserTable->isSignupWithSocial($user->getId())){
                 $this->user->setUser($user);
                 $this->flash->success($this->translater->trans('social.success'));
+                $this->event->trigger(new SocialAuthLoginEvent($this->authUserTable->findBy("user_id", $user->getId())));
             } else {
                 $this->flash->success($this->translater->trans('social.already'));
-
             }
         } catch (NoRecordException $e){
             $this->session->set('socialauth.username', $owner->getUsername());
@@ -198,7 +203,7 @@ class SocialAuthService
         $user->id = $userId;
         $this->user->setUser($userId);
         $this->authUserTable->signup($userId, $id, $provider, $refresh);
-
+        $this->event->trigger(new SocialAuthSignupEvent($this->authUserTable->findBy("user_id", $user->getId())));
         $this->clearSession();
         return (new RedirectResponse($this->router->generateURI('account')));
     }
