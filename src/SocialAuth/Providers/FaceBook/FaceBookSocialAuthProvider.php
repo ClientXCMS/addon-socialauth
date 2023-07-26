@@ -216,7 +216,7 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
     }
     public function logo():string
     {
-        return "https://cdn.usbrandcolors.com/images/logos/facebook-logo.svg";
+        return "https://api.clientxcms.com/assets/4543fddb-8fb5-4e75-9927-7803a80fe9b2";
     }
 
     protected function getAuthorizationHeaders($token = null)

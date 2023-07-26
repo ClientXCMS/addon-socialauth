@@ -8,6 +8,7 @@ use App\SocialAuth\SocialAuthService;
 use ClientX\Actions\Action;
 use ClientX\Renderer\RendererInterface;
 use ClientX\Session\SessionInterface;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
 class FinishAction extends Action
@@ -39,6 +40,9 @@ class FinishAction extends Action
 
         $username = $this->session->get('socialauth.username');
         $email = $this->session->get('socialauth.email');
+        if ($email == null){
+            return new Response(404);
+        }
         $errors = [];
         if ($request->getMethod() == 'POST'){
 

@@ -32,7 +32,7 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
     public function logo():string
     {
-        return "https://cdn.usbrandcolors.com/images/logos/google-logo.svg";
+        return "https://api.clientxcms.com/assets/fb2668f3-456e-46ba-8fbb-4a126c630cd4";
     }
 
     /**
@@ -67,10 +67,8 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
         return 'https://openidconnect.googleapis.com/v1/userinfo';
     }
-
-    protected function fetchResourceOwnerDetails(AccessToken $token)
+    protected function getAuthorizationParameters(array $options): array
     {
-
 
         $scopes = $this->getDefaultScopes();
 
@@ -83,7 +81,6 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
         $options = parent::getAuthorizationParameters($options);
 
         unset($options['approval_prompt']);
-
         return $options;
     }
 
@@ -92,7 +89,7 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
      * the URL for requesting an access token.
      *
      * Discord's scope separator is space (%20)
-     *
+     *f
      * @return string Scope separator
      */
     protected function getScopeSeparator()
@@ -109,6 +106,7 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
             'openid',
             'email',
             'profile',
+
         ];
     }
 

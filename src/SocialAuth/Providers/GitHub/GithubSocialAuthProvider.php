@@ -34,7 +34,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
     public function logo():string
     {
-        return "https://logos-marques.com/wp-content/uploads/2021/03/GitHub-Logo.png";
+        return "https://api.clientxcms.com/assets/0cc91503-703f-4623-a11f-010f658abab3";
     }
 
     /**

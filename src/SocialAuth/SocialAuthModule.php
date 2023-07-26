@@ -2,6 +2,7 @@
 
 namespace App\SocialAuth;
 
+use App\Auth\Middleware\ForbiddenMiddleware;
 use App\SocialAuth\Actions\Admin\ConfigAdminAction;
 use App\SocialAuth\Actions\Admin\IndexAdminAction;
 use App\SocialAuth\Actions\Admin\SwichAdminAction;
@@ -18,9 +19,14 @@ use Psr\Container\ContainerInterface;
 class SocialAuthModule extends Module
 {
     const DEFINITIONS = __DIR__ . '/config.php';
+    const UUID = "socialauth";
+    const NAME = "Social Auth";
 
     public function __construct(Router $router, RendererInterface $renderer, ContainerInterface $container, EventManager $event)
     {
+        if (!class_exists(\League\OAuth2\Client\Provider\AbstractProvider::class)){
+            die("Please upgrade your CLIENTXCMS and update your composer dependencies! cf : https://clientxcms.com/ref/composer");
+        }
         // Pour désactiver la connexion et le mot de passe oublié des comptes connectés avec un provider
         $event->attach('auth.login', $container->get(SocialAuthEventManager::class));
         $event->attach('auth.password.forgot', $container->get(SocialAuthEventManager::class));
@@ -35,5 +41,14 @@ class SocialAuthModule extends Module
             $router->any($adminPrefix . '/socialauth/config/[*:name]', ConfigAdminAction::class, 'socialauth.admin.config');
             $router->post($adminPrefix . '/socialauth/switch/[*:name]', SwichAdminAction::class, 'socialauth.admin.switch');
         }
+    }
+
+    public static function middlewares(): array
+    {
+        return [
+            SocialAuthMiddleware::class => [
+                'before' => ForbiddenMiddleware::class,
+            ]
+        ];
     }
 }

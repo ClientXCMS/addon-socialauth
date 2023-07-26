@@ -34,7 +34,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
 
     public function logo():string
     {
-        return "https://logovtor.com/wp-content/uploads/2022/06/discord-logo-vector-2022.png";
+        return "https://api.clientxcms.com/assets/63a071c2-a3d5-494c-ba3f-3a61d6e29be1";
     }
 
     /**

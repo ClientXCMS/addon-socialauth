@@ -24,6 +24,9 @@ use ClientX\Response\RedirectResponse;
 use ClientX\Router;
 use ClientX\Session\FlashService;
 use ClientX\Session\SessionInterface;
+
+use App\Account\Event\SignupEvent;
+use App\Auth\Event\LoginEvent;
 use ClientX\Translator\Translater;
 use ClientX\Validator;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -131,8 +134,13 @@ class SocialAuthService
                 $this->user->setUser($user);
                 $this->flash->success($this->translater->trans('social.success'));
                 $this->event->trigger(new SocialAuthLoginEvent($this->authUserTable->findBy("user_id", $user->getId())));
+                $this->event->trigger(new LoginEvent($user));
+
+                return new RedirectResponse('/client');
             } else {
                 $this->flash->success($this->translater->trans('social.already'));
+                return new RedirectResponse('/auth/login');
+
             }
         } catch (NoRecordException $e){
             $this->session->set('socialauth.username', $owner->getUsername());
@@ -192,6 +200,7 @@ class SocialAuthService
 
     public function finish(array $params)
     {
+
         $email = $this->session->get('socialauth.email');
         $provider = $this->session->get('socialauth.provider');
         $refresh = $this->session->get('socialauth.token');
@@ -202,15 +211,17 @@ class SocialAuthService
         $userId = $this->userTable->insert($params);
         $user->id = $userId;
         $this->user->setUser($userId);
-        $this->authUserTable->signup($userId, $id, $provider, $refresh);
+        $this->authUserTable->signup($userId, (int)$id, $provider, $refresh ?? 'null');
         $this->event->trigger(new SocialAuthSignupEvent($this->authUserTable->findBy("user_id", $user->getId())));
+        $this->event->trigger(new SignupEvent($user));
+
         $this->clearSession();
         return (new RedirectResponse($this->router->generateURI('account')));
     }
 
-    private function clearSession()
+    public function clearSession()
     {
-        $keys = ['socialauth.email', 'socialauth.token', 'socialauth.provider', 'socialauth.username', 'socialauth.id', 'socialauth.toarray', 'socialauth.token'];
+        $keys = ['socialauth.email', 'socialauth.provider', 'socialauth.username', 'socialauth.id', 'socialauth.toarray', 'socialauth.token'];
         collect($keys)->map(function($key){
             $this->session->delete($key);
         });
@@ -232,7 +243,13 @@ class SocialAuthService
 
     public function saveProvider(string $name, string $clientId, string $secretId, string $redirectUri)
     {
-        if ($this->providerTable->findBy("name", $name)){
+        try {
+            $this->providerTable->findBy("name", $name);
+            $exist = true;
+        } catch (NoRecordException $e){
+            $exist = false;
+        }
+        if ($exist){
             $this->providerTable->update($name, [
                 'name' => $name,
                 'client_id' => @(new Crypter())->encrypt($clientId),

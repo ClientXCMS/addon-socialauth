@@ -1,5 +1,6 @@
 <?php
 
+use App\SocialAuth\Actions\FinishAction;
 use App\SocialAuth\Factory\SocialAuthEnabledFactory;
 use App\SocialAuth\Providers\Discord\DiscordSocialAuthProvider;
 use App\SocialAuth\Providers\FaceBook\FaceBookSocialAuthProvider;
@@ -16,7 +17,8 @@ return [
     'socialauth.providers' => [new GoogleSocialAuthProvider(), new DiscordSocialAuthProvider(), new GithubSocialAuthProvider(), new FaceBookSocialAuthProvider()],
     'socialauth.enabled' => factory(SocialAuthEnabledFactory::class),
     "admin.menu.items" => add(get(SocialAuthAdminItem::class)),
-
+    'permissions.list' => add(['socialauth.admin.index' => 'Social Auth']),
+    FinishAction::class => autowire()->constructorParameter('options', get('how_did_you_find_us')),
     \App\SocialAuth\SocialAuthService::class => autowire()
         ->constructorParameter('providers', get('socialauth.providers'))
 
