@@ -132,13 +132,13 @@ class SocialAuthService
             $user = $this->userTable->findBy("email", $owner->getEmail());
             if ($this->authUserTable->isSignupWithSocial($user->getId())){
                 $this->user->setUser($user);
-                $this->flash->success($this->translater->trans('social.success'));
+                $this->flash->success($this->translater->trans('socialauth.success'));
                 $this->event->trigger(new SocialAuthLoginEvent($this->authUserTable->findBy("user_id", $user->getId())));
                 $this->event->trigger(new LoginEvent($user));
 
                 return new RedirectResponse('/client');
             } else {
-                $this->flash->success($this->translater->trans('social.already'));
+                $this->flash->success($this->translater->trans('socialauth.already'));
                 return new RedirectResponse('/auth/login');
 
             }
