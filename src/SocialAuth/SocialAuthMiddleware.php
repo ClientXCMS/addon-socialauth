@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use ClientX\Helpers\Str;
 
 class SocialAuthMiddleware implements MiddlewareInterface
 {
@@ -24,7 +25,10 @@ class SocialAuthMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $path = $this->router->generateURI('socialauth.finish');
+        if (Str::startsWith( $request->getUri()->getPath(), ['/theme', '/admin', '/Themes'])){
+        return $handler->handle($request);
 
+        }
         if ($this->session->get('socialauth.id') != null && $request->getUri()->getPath() != $path){
             return new RedirectResponse($path);
         }
