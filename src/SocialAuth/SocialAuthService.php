@@ -256,14 +256,15 @@ class SocialAuthService
                 'client_secret' => @(new Crypter())->encrypt($secretId),
                 'redirect_uri' => $redirectUri
             ], 'name');
+        } else {
+            $this->providerTable->insert([
+                'name' => $name,
+                'client_id' => @(new Crypter())->encrypt($clientId),
+                'client_secret' => @(new Crypter())->encrypt($secretId),
+                'redirect_uri' => $redirectUri,
+                'enabled' => 1
+            ]);
         }
-        $this->providerTable->insert([
-            'name' => $name,
-            'client_id' => @(new Crypter())->encrypt($clientId),
-            'client_secret' => @(new Crypter())->encrypt($secretId),
-            'redirect_uri' => $redirectUri,
-            'enabled' => 1
-        ]);
     }
 
     public function findConfig(string $name)
