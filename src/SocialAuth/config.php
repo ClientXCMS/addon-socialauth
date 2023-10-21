@@ -4,7 +4,7 @@ use App\SocialAuth\Actions\FinishAction;
 use App\SocialAuth\Factory\SocialAuthEnabledFactory;
 use App\SocialAuth\Providers\Discord\DiscordSocialAuthProvider;
 use App\SocialAuth\Providers\FaceBook\FaceBookSocialAuthProvider;
-use App\SocialAuth\Providers\GitHub\GithubSocialAuthProvider;
+use App\SocialAuth\Providers\Github\GithubSocialAuthProvider;
 use App\SocialAuth\Providers\Google\GoogleSocialAuthProvider;
 use App\SocialAuth\SocialAuthAdminItem;
 use function ClientX\setting;
