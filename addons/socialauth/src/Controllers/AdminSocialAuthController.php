@@ -87,9 +87,9 @@ class AdminSocialAuthController extends AbstractCrudController
     public function update(ProviderEntity $providerEntity)
     {
         $validated = request()->validate([
-            'client_id' => 'required',
-            'client_secret' => 'required',
-            'redirect_url' => 'required|url',
+            'client_id' => 'required|string|max:1000',
+            'client_secret' => 'required|string|max:1000',
+            'redirect_url' => 'required|url|max:1000',
         ]);
         $providerEntity->update($validated);
 
