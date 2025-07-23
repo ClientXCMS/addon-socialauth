@@ -44,7 +44,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
 
     public function logo(): string
     {
-        return 'https://api.clientxcms.com/assets/63a071c2-a3d5-494c-ba3f-3a61d6e29be1';
+        return 'https://api-nextgen.clientxcms.com/assets/c54ccba9-3381-400b-a88d-fccd315b9791';
     }
 
     /**

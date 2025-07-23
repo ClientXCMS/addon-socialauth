@@ -26,7 +26,7 @@ class AdminSocialAuthController extends AbstractCrudController
 
     public function getIndexParams($items, string $translatePrefix, $filter = null, $filters = [])
     {
-        staff_aborts_permission(Permission::MANAGE_EXTENSIONS);
+        staff_aborts_permission(Permission::MANAGE_PERSONALIZATION);
         $data = parent::getIndexParams($items, $translatePrefix);
         $data['providers'] = ProviderEntity::getProviders();
         $data['enabledProviders'] = ProviderEntity::all()->where('enabled', true)->pluck('name')->toArray();
@@ -36,7 +36,7 @@ class AdminSocialAuthController extends AbstractCrudController
 
     public function enable(string $provider)
     {
-        staff_aborts_permission(Permission::MANAGE_EXTENSIONS);
+        staff_aborts_permission(Permission::MANAGE_PERSONALIZATION);
         $names = collect(ProviderEntity::getProviders())->map(function (SocialAuthProviderInterface $providerEntity) {
             return $providerEntity->name();
         })->toArray();
@@ -53,7 +53,7 @@ class AdminSocialAuthController extends AbstractCrudController
 
     public function disable(string $provider)
     {
-        staff_aborts_permission(Permission::MANAGE_EXTENSIONS);
+        staff_aborts_permission(Permission::MANAGE_PERSONALIZATION);
         $names = collect(ProviderEntity::getProviders())->map(function (SocialAuthProviderInterface $providerEntity) {
             return $providerEntity->name();
         })->toArray();
@@ -70,7 +70,7 @@ class AdminSocialAuthController extends AbstractCrudController
 
     public function show(ProviderEntity $providerEntity)
     {
-        staff_aborts_permission(Permission::MANAGE_EXTENSIONS);
+        staff_aborts_permission(Permission::MANAGE_PERSONALIZATION);
         $provider = $providerEntity->provider();
         abort_if(! $provider, 404);
         $customers = Metadata::where('key', 'social_'.$provider->name())->get()->map(function ($item) {
@@ -86,6 +86,7 @@ class AdminSocialAuthController extends AbstractCrudController
 
     public function update(ProviderEntity $providerEntity)
     {
+        staff_aborts_permission(Permission::MANAGE_PERSONALIZATION);
         $validated = request()->validate([
             'client_id' => 'required|string|max:1000',
             'client_secret' => 'required|string|max:1000',

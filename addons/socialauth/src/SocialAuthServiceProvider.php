@@ -33,7 +33,7 @@ class SocialAuthServiceProvider extends BaseAddonServiceProvider
         $this->loadTranslations();
         $this->loadViews();
         $service = $this->app->make('settings');
-        $service->addCardItem('extensions', 'socialauth', 'socialauth::messages.modulename', 'socialauth::messages.description', 'bi bi-door-open', [AdminSocialAuthController::class, 'index'], Permission::MANAGE_EXTENSIONS);
+        $service->addCardItem('personalization', 'socialauth', 'socialauth::messages.modulename', 'socialauth::messages.description', 'bi bi-door-open', [AdminSocialAuthController::class, 'index'], Permission::MANAGE_PERSONALIZATION);
 
     }
 }

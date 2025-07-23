@@ -43,7 +43,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
     public function logo(): string
     {
-        return 'https://api.clientxcms.com/assets/0cc91503-703f-4623-a11f-010f658abab3';
+        return 'https://api-nextgen.clientxcms.com/assets/da244d79-db15-41dc-b47a-7b5981be13be';
     }
 
     /**

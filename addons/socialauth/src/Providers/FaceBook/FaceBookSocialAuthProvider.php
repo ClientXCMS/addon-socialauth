@@ -220,7 +220,7 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
 
     public function logo(): string
     {
-        return 'https://api.clientxcms.com/assets/4543fddb-8fb5-4e75-9927-7803a80fe9b2';
+        return 'https://api-nextgen.clientxcms.com/assets/328f3ff0-5943-4ec8-8393-735f41e9cd2b';
     }
 
     protected function getAuthorizationHeaders($token = null)

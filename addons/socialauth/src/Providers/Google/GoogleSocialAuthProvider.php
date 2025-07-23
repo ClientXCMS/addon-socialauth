@@ -39,7 +39,7 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
     public function logo(): string
     {
-        return 'https://api.clientxcms.com/assets/fb2668f3-456e-46ba-8fbb-4a126c630cd4';
+        return 'https://api-nextgen.clientxcms.com/assets/91ba546e-3154-4006-bfd9-19d66214ae13';
     }
 
     /**
