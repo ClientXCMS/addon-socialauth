@@ -22,11 +22,6 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
         return '#DB4437';
     }
 
-    public function icon(): string
-    {
-        return resource_path('global/socialauth/google.svg');
-    }
-
     public function name(): string
     {
         return 'google';
@@ -39,7 +34,7 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
     public function logo(): string
     {
-        return 'https://api-nextgen.clientxcms.com/assets/91ba546e-3154-4006-bfd9-19d66214ae13';
+        return 'https://cdn.clientxcms.com/ressources/socialauth/google.svg';
     }
 
     /**
@@ -121,7 +116,7 @@ class GoogleSocialAuthProvider extends AbstractProvider implements SocialAuthPro
     protected function getAuthorizationHeaders($token = null)
     {
         if ($token) {
-            return ['Authorization' => 'Bearer '.$token->getToken()];
+            return ['Authorization' => 'Bearer ' . $token->getToken()];
         }
 
         return [];
