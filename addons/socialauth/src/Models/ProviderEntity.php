@@ -13,6 +13,10 @@ use App\Addons\SocialAuth\Providers\Discord\DiscordSocialAuthProvider;
 use App\Addons\SocialAuth\Providers\FaceBook\FaceBookSocialAuthProvider;
 use App\Addons\SocialAuth\Providers\Github\GithubSocialAuthProvider;
 use App\Addons\SocialAuth\Providers\Google\GoogleSocialAuthProvider;
+use App\Addons\SocialAuth\Providers\ClientXCMS\ClientXCMSSocialAuthProvider;
+use App\Addons\SocialAuth\Providers\Twitch\TwitchSocialAuthProvider;
+use App\Addons\SocialAuth\Providers\Microsoft\MicrosoftSocialAuthProvider;
+use App\Addons\SocialAuth\Providers\Minecraft\MinecraftSocialAuthProvider;
 use App\Addons\SocialAuth\Providers\SocialAuthProviderInterface;
 use App\Casts\EncryptCast;
 use App\Models\Account\Customer;
@@ -66,7 +70,16 @@ class ProviderEntity extends Model
 
     public static function getProviders()
     {
-        return [new GoogleSocialAuthProvider, new DiscordSocialAuthProvider, new GithubSocialAuthProvider, new FaceBookSocialAuthProvider];
+        return [
+            new GoogleSocialAuthProvider(),
+            new DiscordSocialAuthProvider(),
+            new GithubSocialAuthProvider(),
+            new FaceBookSocialAuthProvider(),
+            new ClientXCMSSocialAuthProvider(),
+            new TwitchSocialAuthProvider(),
+            new MicrosoftSocialAuthProvider(),
+            new MinecraftSocialAuthProvider()
+        ];
     }
 
     public function provider(): ?SocialAuthProviderInterface
@@ -79,6 +92,8 @@ class ProviderEntity extends Model
 
             return new $class(['clientId' => $this->client_id, 'clientSecret' => $this->client_secret, 'redirectUri' => $this->redirect_url]);
         }
+
+        return null;
     }
 
     public function isSynced(): bool
