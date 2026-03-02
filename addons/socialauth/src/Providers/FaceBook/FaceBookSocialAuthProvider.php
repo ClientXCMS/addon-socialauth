@@ -78,12 +78,6 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
         return '#4267B2';
     }
 
-    public function icon(): string
-    {
-        return resource_path('global/socialauth/facebook.svg');
-
-    }
-
     public function name(): string
     {
         return 'facebook';
@@ -109,9 +103,15 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
             $this->fields = $options['fields'];
         } else {
             $this->fields = [
-                'id', 'name', 'first_name', 'last_name',
-                'email', 'hometown', 'picture.type(large){url,is_silhouette}',
-                'gender', 'age_range',
+                'id',
+                'name',
+                'first_name',
+                'last_name',
+                'email',
+                'hometown',
+                'picture.type(large){url,is_silhouette}',
+                'gender',
+                'age_range',
             ];
 
             // backwards compatibility less than 2.8
@@ -123,12 +123,12 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
 
     public function getBaseAuthorizationUrl(): string
     {
-        return $this->getBaseFacebookUrl().$this->graphApiVersion.'/dialog/oauth';
+        return $this->getBaseFacebookUrl() . $this->graphApiVersion . '/dialog/oauth';
     }
 
     public function getBaseAccessTokenUrl(array $params): string
     {
-        return $this->getBaseGraphUrl().$this->graphApiVersion.'/oauth/access_token';
+        return $this->getBaseGraphUrl() . $this->graphApiVersion . '/oauth/access_token';
     }
 
     public function getDefaultScopes(): array
@@ -141,9 +141,9 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
         $appSecretProof = hash_hmac('sha256', $this->clientSecret, $token->getToken());
 
         return $this->getBaseGraphUrl()
-            .$this->graphApiVersion
-            .'/me?fields='.implode(',', $this->fields)
-            .'&access_token='.$token.'&appsecret_proof='.$appSecretProof;
+            . $this->graphApiVersion
+            . '/me?fields=' . implode(',', $this->fields)
+            . '&access_token=' . $token . '&appsecret_proof=' . $appSecretProof;
     }
 
     public function getAccessToken($grant = 'authorization_code', array $params = []): AccessToken
@@ -178,7 +178,7 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
             return;
         }
 
-        $message = $data['error']['type'].': '.$data['error']['message'];
+        $message = $data['error']['type'] . ': ' . $data['error']['message'];
         throw new IdentityProviderException($message, $data['error']['code'], $data);
     }
 
@@ -220,13 +220,13 @@ class FaceBookSocialAuthProvider extends AbstractProvider implements SocialAuthP
 
     public function logo(): string
     {
-        return 'https://api-nextgen.clientxcms.com/assets/328f3ff0-5943-4ec8-8393-735f41e9cd2b';
+        return 'https://cdn.clientxcms.com/ressources/socialauth/facebook.svg';
     }
 
     protected function getAuthorizationHeaders($token = null)
     {
         if ($token) {
-            return ['Authorization' => 'Bearer '.$token->getToken()];
+            return ['Authorization' => 'Bearer ' . $token->getToken()];
         }
 
         return [];

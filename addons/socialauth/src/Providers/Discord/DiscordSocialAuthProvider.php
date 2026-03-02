@@ -26,12 +26,6 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
         return '#23272A';
     }
 
-    public function icon(): string
-    {
-        return resource_path('global/socialauth/discord.svg');
-
-    }
-
     public function name(): string
     {
         return 'discord';
@@ -44,7 +38,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
 
     public function logo(): string
     {
-        return 'https://api-nextgen.clientxcms.com/assets/c54ccba9-3381-400b-a88d-fccd315b9791';
+        return 'https://cdn.clientxcms.com/ressources/socialauth/discord.svg';
     }
 
     /**
@@ -54,7 +48,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
      */
     public function getBaseAuthorizationUrl()
     {
-        return $this->host.'/oauth2/authorize';
+        return $this->host . '/oauth2/authorize';
     }
 
     /**
@@ -64,7 +58,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return $this->apiDomain.'/oauth2/token';
+        return $this->apiDomain . '/oauth2/token';
     }
 
     /**
@@ -74,7 +68,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
      */
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
-        return $this->apiDomain.'/users/@me';
+        return $this->apiDomain . '/users/@me';
     }
 
     /**
@@ -105,7 +99,7 @@ class DiscordSocialAuthProvider extends AbstractProvider implements SocialAuthPr
     protected function getAuthorizationHeaders($token = null)
     {
         if ($token) {
-            return ['Authorization' => 'Bearer '.$token->getToken()];
+            return ['Authorization' => 'Bearer ' . $token->getToken()];
         }
 
         return [];

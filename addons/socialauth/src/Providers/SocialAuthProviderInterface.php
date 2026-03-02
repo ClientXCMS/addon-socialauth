@@ -18,6 +18,4 @@ interface SocialAuthProviderInterface
     public function title(): string;
 
     public function logo(): string;
-
-    public function icon(): string;
 }

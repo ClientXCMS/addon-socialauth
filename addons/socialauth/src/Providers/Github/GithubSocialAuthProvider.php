@@ -26,11 +26,6 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
         return '#333';
     }
 
-    public function icon(): string
-    {
-        return resource_path('global/socialauth/github.svg');
-    }
-
     public function name(): string
     {
         return 'github';
@@ -43,7 +38,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
 
     public function logo(): string
     {
-        return 'https://api-nextgen.clientxcms.com/assets/da244d79-db15-41dc-b47a-7b5981be13be';
+        return 'https://cdn.clientxcms.com/ressources/socialauth/github.svg';
     }
 
     /**
@@ -53,7 +48,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
      */
     public function getBaseAuthorizationUrl()
     {
-        return $this->host.'/login/oauth/authorize';
+        return $this->host . '/login/oauth/authorize';
     }
 
     /**
@@ -63,7 +58,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return $this->host.'/login/oauth/access_token';
+        return $this->host . '/login/oauth/access_token';
     }
 
     /**
@@ -74,7 +69,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
 
-        return $this->apiDomain.'/user';
+        return $this->apiDomain . '/user';
     }
 
     protected function fetchResourceOwnerDetails(AccessToken $token)
@@ -83,7 +78,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
         $response = parent::fetchResourceOwnerDetails($token);
 
         if (empty($response['email'])) {
-            $url = $this->getResourceOwnerDetailsUrl($token).'/emails';
+            $url = $this->getResourceOwnerDetailsUrl($token) . '/emails';
 
             $request = $this->getAuthenticatedRequest(self::METHOD_GET, $url, $token);
 
@@ -119,7 +114,7 @@ class GithubSocialAuthProvider extends AbstractProvider implements SocialAuthPro
     protected function getAuthorizationHeaders($token = null)
     {
         if ($token) {
-            return ['Authorization' => 'Bearer '.$token->getToken()];
+            return ['Authorization' => 'Bearer ' . $token->getToken()];
         }
 
         return [];
