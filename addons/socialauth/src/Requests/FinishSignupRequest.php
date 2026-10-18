@@ -21,6 +21,7 @@ class FinishSignupRequest extends \Illuminate\Foundation\Http\FormRequest
     public function rules()
     {
         $rules = \App\Services\Account\AccountEditService::rules($this->country, true);
+        unset($rules['email']);
         if (setting('register_toslink')) {
             $rules['accept_tos'] = ['accepted'];
         }

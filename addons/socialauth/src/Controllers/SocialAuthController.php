@@ -146,13 +146,15 @@ class SocialAuthController extends AbstractCrudController
             $user = Session::get('social_user');
             $provider = Session::get('social_provider', 'discord');
             $customer = new Customer;
-            $customer->fill($request->validated() + ['password' => Hash::make(\Str::random()), 'email' => $user->getEmail()]);
+            $customer->fill($request->safe()->except('email') + ['password' => Hash::make(\Str::random()), 'email' => $user->getEmail()]);
             $customer->save();
             $customer->attachMetadata('signup_social', true);
             $customer->attachMetadata('social_'.$provider, $user->getId());
             $customer->attachMetadata('social_'.$provider.'_email', $user->getEmail());
             $customer->attachMetadata('social_'.$provider.'_refresh_token', $request->refresh_token);
-            $customer->markEmailAsVerified();
+            if (! method_exists($user, 'getVerified') || $user->getVerified()) {
+                $customer->markEmailAsVerified();
+            }
             $this->clearSession();
             \Auth::login($customer);
             event(new Login('web', $customer, false));
